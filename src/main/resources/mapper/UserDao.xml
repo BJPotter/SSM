@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.root.dao.UserDao">
+  <resultMap id="BaseResultMap" type="com.root.entity.User">
+    <id column="UserName" jdbcType="CHAR" property="username" />
+    <result column="Password" jdbcType="CHAR" property="password" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    UserName, `Password`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from users
+    where UserName = #{username,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from users
+    where UserName = #{username,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.root.entity.User">
+    insert into users (UserName, `Password`)
+    values (#{username,jdbcType=CHAR}, #{password,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.root.entity.User">
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        UserName,
+      </if>
+      <if test="password != null">
+        `Password`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        #{username,jdbcType=CHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.root.entity.User">
+    update users
+    <set>
+      <if test="password != null">
+        `Password` = #{password,jdbcType=CHAR},
+      </if>
+    </set>
+    where UserName = #{username,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.root.entity.User">
+    update users
+    set `Password` = #{password,jdbcType=CHAR}
+    where UserName = #{username,jdbcType=CHAR}
+  </update>
+</mapper>
